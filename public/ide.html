@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.2.slim.min.js" integrity="sha256-E3P3OaTZH+HlEM7f1gdAT3lHAn4nWBZXuYe89DFg2d0=" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" >
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" >
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="chatstyle.css">
+    
+    <!-- theme meta -->
+  
+     <title>User Identification </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+    <link href="./plugins/toastr/css/toastr.min.css" rel="stylesheet">
+    <link href="./plugins/sweetalert/css/sweetalert.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.17.1.min.js"></script>
+    <script src="plotly-2.17.1.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript">  </script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.2.slim.min.js" integrity="sha256-E3P3OaTZH+HlEM7f1gdAT3lHAn4nWBZXuYe89DFg2d0=" crossorigin="anonymous"></script> -->
+    <link href="style.css" rel="stylesheet">
+    <!-- <script defer async src="./js/script.js"></script> -->
+<style>
+     #reader__scan_region{
+                                    width:550px;
+                                    height:350px;
+                                  }
+                                  #reader__camera_permission_button{
+                                  padding:10px;
+                                  font-size:22px;
+                                  }
+                                  #reader__dashboard_section_swaplink{
+                                  display:none;
+                                  }
+                                  #container{
+                                    display:flex;
+                                    justify-content:center;
+                                    align-items:center;
+                                   
+                                  
+                                  }
+                                  #reader{
+                                      width:450px;
+                                      height:350px;
+                                      border:1px solid black;
+                                      border-radius:15px;
+                                  }
+                                  
+</style>
+    
+
+</head>
+<body>
+  
+   
+
+
+    <div class="modal fade" id="exampleModalCenter2" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Inputs to Program</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <label class="col-form-label">Give inputs to the program if code is expecting any user inputs .you wont be able to give inputs later while program is running!!<br>
+                        you can give multiple inputs seperated by space or in new line.</label>
+                        <div class="form-group row">
+                            <div class="col-sm-9">
+                               <textarea id="inppts" style="padding: 6px;" name="" id="" cols="50" rows="10"></textarea>
+                            </div>
+                        </div>
+                        
+                       
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="clsinp" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="runcode">Run</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModalCenter" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Email</label>
+                            <div class="col-sm-9">
+                                <input id="email"type="text" readonly="readonly" class="form-control-plaintext" value="email@example.com">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Username</label>
+                            <div class="col-sm-9">
+                                <input  id="username" type="text" class="form-control" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Password</label>
+                            <div class="col-sm-9">
+                                <input  id="password" type="text" class="form-control" placeholder="Password">
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="savedata">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    
+    <div id="main-wrapper">
+
+    
+        <div class="content-body" style="margin-left: 0px;">
+
+            <div class="container-fluid mt-3">
+              
+                <div class="row" id="chat-head">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body" style="display: flex;justify-content: space-between;">
+                                <div>
+                                    
+                                
+                              
+                                <button type="button" id="dashboard"
+                           class="btn mb-1 btn-success">Dashboard<span class="btn-icon-right"><i class="fa fa-home"></i></span>
+                                </button>
+                                <button type="button"  data-toggle="modal" data-target="#exampleModalCenter2" class="btn mb-1 btn-success">Run Code<span class="btn-icon-right"><i class="fas fa-play"></i></span>
+                                </button>
+                            </div>
+                                
+                                    <div class="dropdown" style="display: inline-block;">
+                                        <button id ="langsel" data-lid="0" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Select Language</button>
+                                        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute;overflow: scroll;max-height:350px ; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
+                                            <!-- <a class="dropdown-item" href="#">Link 1</a> 
+                                            <a class="dropdown-item" href="#">Link 2</a> 
+                                            <a class="dropdown-item" href="#">Link 3</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Another link</a> -->
+                                        </div>
+                                    </div>
+                               
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="chat-head">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body" style="padding: 5px;">
+                          
+                                
+                                <div class="row" id="idrow">
+                                    <div class="col" id="txtide">
+                                        <div class="card">
+                                            <div class="card-body" style="padding: 5px;">
+                                                <textarea id="srccode" class="form-control h-150px" rows="6" id="comment" style="color:white;background-color: #171717;border-radius: 15px;padding: 15px;"></textarea>
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="col" id="txtidee">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h2>Output</h2>
+                                                <p id="output"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    
+                                        
+                                      
+                                            
+                                              
+                                         
+                                                
+
+                                                
+                               
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                    
+                                    
+                                    
+                             
+           
+           
+                
+
+                
+                
+
+
+               
+
+                
+
+                
+
+        </div>
+    
+    </div>
+   
+    <script src="plugins/common/common.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/gleek.js"></script>
+    <script src="js/styleSwitcher.js"></script>
+
+    <!-- Chartjs -->
+    <script src="./plugins/chart.js/Chart.bundle.min.js"></script>
+    <!-- Circle progress -->
+    <script src="./plugins/circle-progress/circle-progress.min.js"></script>
+    <!-- Datamap -->
+    <script src="./plugins/d3v3/index.js"></script>
+    <script src="./plugins/topojson/topojson.min.js"></script>
+    <script src="./plugins/datamaps/datamaps.world.min.js"></script>
+    <!-- Morrisjs -->
+    <script src="./plugins/raphael/raphael.min.js"></script>
+    <script src="./plugins/morris/morris.min.js"></script>
+    <!-- Pignose Calender -->
+    <script src="./plugins/moment/moment.min.js"></script>
+    <script src="./plugins/pg-calendar/js/pignose.calendar.min.js"></script>
+    <!-- ChartistJS -->
+    <script src="./plugins/chartist/js/chartist.min.js"></script>
+    <script src="./plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js"></script>
+
+
+    <script src="./plugins/sweetalert/js/sweetalert.min.js"></script>
+    <script src="./plugins/sweetalert/js/sweetalert.init.js"></script>
+    <script src="./js/dashboard/dashboard-1.js"></script>
+  
+    <script src="./plugins/toastr/js/toastr.min.js"></script>
+    <script src="./plugins/toastr/js/toastr.init.js"></script>
+    <script src="file.js"></script>
+    <script>
+function lans(id,name){
+  $("#langsel").html(name);
+  $("#langsel").data("lid",id);
+}
+
+
+
+    
+ 
+    
+  
+      </script>
+     
+</body>
+
+</html>
+
